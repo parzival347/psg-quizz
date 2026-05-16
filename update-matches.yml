@@ -1,0 +1,67 @@
+name: Update PSG Matches
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # chaque jour à 6h UTC
+  workflow_dispatch:       # déclenchement manuel possible
+
+jobs:
+  update-matches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch PSG matches
+        env:
+          API_TOKEN: ${{ secrets.FOOTBALL_API_TOKEN }}
+        run: |
+          curl -s -H "X-Auth-Token: $API_TOKEN" \
+            "https://api.football-data.org/v4/teams/524/matches?status=SCHEDULED&limit=5" \
+            -o scheduled.json
+
+          curl -s -H "X-Auth-Token: $API_TOKEN" \
+            "https://api.football-data.org/v4/teams/524/matches?status=FINISHED&limit=5" \
+            -o finished.json
+
+          python3 - <<'EOF'
+import json, os
+
+with open('scheduled.json') as f:
+    scheduled = json.load(f).get('matches', [])
+with open('finished.json') as f:
+    finished = json.load(f).get('matches', [])
+
+def fmt(match, past=False):
+    home = match['homeTeam']['shortName'] or match['homeTeam']['name']
+    away = match['awayTeam']['shortName'] or match['awayTeam']['name']
+    date = match['utcDate'][:10]
+    time = match['utcDate'][11:16]
+    competition = match['competition']['name']
+    score = None
+    if past:
+        s = match.get('score', {}).get('fullTime', {})
+        if s.get('home') is not None:
+            score = f"{s['home']}-{s['away']}"
+    return {
+        'title': f"{home} vs {away}",
+        'date': date,
+        'time': time,
+        'score': score,
+        'competition': competition,
+        'venue': ''
+    }
+
+data = [fmt(m, past=True) for m in finished] + [fmt(m, past=False) for m in scheduled]
+with open('matches.json', 'w') as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+print(f"Written {len(data)} matches")
+EOF
+
+      - name: Commit matches.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add matches.json
+          git diff --staged --quiet || git commit -m "Update PSG matches [$(date +'%Y-%m-%d')]"
+          git push

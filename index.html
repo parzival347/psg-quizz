@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz PSG Complet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
+      --radius-sm: .375rem; --radius-md: .75rem; --radius-lg: 1rem; --radius-xl: 1.25rem; --radius-full: 9999px;
+      --color-bg: #08111f;
+      --color-surface: #0d1a2d;
+      --color-surface-2: #11223a;
+      --color-border: rgba(255,255,255,.1);
+      --color-text: #f6f8fb;
+      --color-text-muted: #aac0da;
+      --color-text-faint: #6a84a1;
+      --color-primary: #da020e;
+      --color-primary-hover: #af000a;
+      --color-gold: #c7a256;
+      --color-success: #33c27f;
+      --color-warning: #f0a23a;
+      --color-error: #ef5b6a;
+      --shadow-md: 0 12px 32px rgba(0,0,0,.28);
+      --shadow-lg: 0 18px 40px rgba(0,0,0,.4);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(180deg, #07101d 0%, #0b1730 100%);
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; border: none; }
+    img { display: block; max-width: 100%; }
+    .app { max-width: 1180px; margin: 0 auto; padding: var(--space-4); }
+    .topbar {
+      position: sticky; top: 0; z-index: 40; backdrop-filter: blur(12px);
+      background: rgba(8,17,31,.88); border-bottom: 1px solid var(--color-border);
+      margin: calc(var(--space-4) * -1); margin-bottom: var(--space-6); padding: var(--space-4);
+    }
+    .brand { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+    .brand-left { display: flex; align-items: center; gap: var(--space-4); }
+    .logo {
+      width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--color-primary), #7a0008); box-shadow: 0 10px 24px rgba(218,2,14,.35);
+      font-size: 1.6rem;
+    }
+    h1, h2, h3 { font-family: var(--font-display); letter-spacing: .06em; line-height: .95; }
+    h1 { font-size: var(--text-2xl); }
+    h2 { font-size: var(--text-xl); color: var(--color-gold); }
+    h3 { font-size: var(--text-lg); }
+    .muted { color: var(--color-text-muted); }
+    .faint { color: var(--color-text-faint); }
+    .tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: var(--space-4); }
+    .tab {
+      padding: .8rem 1rem; border-radius: var(--radius-full); background: rgba(255,255,255,.05); color: var(--color-text-muted);
+      border: 1px solid transparent; min-height: 44px;
+    }
+    .tab.active { background: rgba(218,2,14,.18); color: #fff; border-color: rgba(218,2,14,.5); }
+    .grid { display: grid; gap: var(--space-6); }
+    .grid-main { grid-template-columns: 1.2fr .8fr; align-items: start; }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.025));
+      border: 1px solid var(--color-border); border-radius: var(--radius-xl); box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .panel-body { padding: var(--space-5); }
+    .hero-card { overflow: hidden; }
+    .hero-media {
+      background: #081828; min-height: 360px; position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .hero-media img { width: 100%; height: 360px; object-fit: cover; object-position: center top; }
+    .jersey {
+      width: 100%; min-height: 360px; display: flex; align-items: center; justify-content: center; flex-direction: column;
+      background: radial-gradient(circle at top, rgba(218,2,14,.18), transparent 55%), #081828;
+    }
+    .jersey svg { filter: drop-shadow(0 8px 22px rgba(218,2,14,.42)); }
+    .number-badge, .streak-badge {
+      position: absolute; top: var(--space-4); padding: .6rem .8rem; border-radius: .9rem; font-weight: 700;
+      box-shadow: 0 6px 16px rgba(0,0,0,.28);
+    }
+    .number-badge { left: var(--space-4); background: rgba(218,2,14,.95); }
+    .streak-badge { right: var(--space-4); background: rgba(199,162,86,.92); color: #18130b; }
+    .question { margin-bottom: var(--space-5); }
+    .question-label { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .18em; color: var(--color-text-faint); margin-bottom: .75rem; }
+    .options { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .75rem; }
+    .btn-option {
+      width: 100%; min-height: 50px; padding: .85rem .95rem; text-align: left; border-radius: .85rem;
+      background: rgba(255,255,255,.05); color: var(--color-text); border: 1px solid rgba(255,255,255,.08);
+      transition: .18s ease;
+    }
+    .btn-option.selected { background: rgba(218,2,14,.22); border-color: rgba(218,2,14,.8); }
+    .btn-option.correct { background: rgba(51,194,127,.18); border-color: var(--color-success); }
+    .btn-option.wrong { background: rgba(239,91,106,.18); border-color: var(--color-error); }
+    .actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .btn-primary, .btn-secondary, .btn-ghost {
+      min-height: 46px; padding: .9rem 1.1rem; border-radius: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover)); color: white; }
+    .btn-secondary { background: #163258; color: white; border: 1px solid rgba(255,255,255,.12); }
+    .btn-ghost { background: rgba(255,255,255,.05); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+    .stats { display: grid; gap: .8rem; }
+    .stat-row { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: .8rem; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .lives { display: flex; gap: .35rem; font-size: 1.2rem; }
+    .feedback {
+      border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; border: 1px solid;
+      background: rgba(255,255,255,.04);
+    }
+    .feedback.ok { border-color: var(--color-success); color: #a9f0cc; }
+    .feedback.bad { border-color: var(--color-error); color: #ffc0c7; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: var(--space-4); }
+    .player-card {
+      background: rgba(255,255,255,.04); border: 1px solid var(--color-border); border-radius: 1rem; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .player-thumb { height: 210px; background: transparent; display:flex; align-items:center; justify-content:center; padding:1rem; }
+    .player-thumb img { width: 172px; height: 172px; object-fit: cover; object-position: center top; border-radius: 50%; border: 4px solid rgba(255,255,255,.18); box-shadow: 0 12px 28px rgba(0,0,0,.28); background:#081828; }
+    .player-content { padding: 1rem; display: grid; gap: .7rem; }
+    .pill { display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .6rem; border-radius: 999px; background: rgba(255,255,255,.06); font-size: var(--text-xs); color: var(--color-text-muted); }
+    .discovered { color: var(--color-success); }
+    .undiscovered { color: var(--color-text-faint); }
+    .fav { color: #f7cf74; }
+    .field-wrap { display: grid; gap: var(--space-4); }
+    .field {
+      position: relative; border-radius: 1.2rem; overflow: hidden; padding: 1rem;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)),
+        repeating-linear-gradient(180deg, #2b8a44 0 48px, #2f9749 48px 96px);
+      min-height: 620px; border: 3px solid rgba(255,255,255,.2);
+    }
+    .field:before, .field:after { content: ''; position: absolute; inset: 18px; border: 2px solid rgba(255,255,255,.42); border-radius: 1rem; pointer-events: none; }
+    .field:after {
+      inset: 50% auto auto 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; border-radius: 50%;
+    }
+    .half-line { position: absolute; left: 50%; top: 18px; bottom: 18px; width: 2px; background: rgba(255,255,255,.42); transform: translateX(-50%); }
+    .box-top, .box-bottom {
+      position: absolute; left: 50%; transform: translateX(-50%); width: 42%; height: 88px; border: 2px solid rgba(255,255,255,.42);
+    }
+    .box-top { top: 18px; border-top: none; border-radius: 0 0 1rem 1rem; }
+    .box-bottom { bottom: 18px; border-bottom: none; border-radius: 1rem 1rem 0 0; }
+    .field-slot {
+      position: absolute; transform: translate(-50%, -50%); width: 90px; text-align: center;
+    }
+    .field-avatar {
+      width: 72px; height: 72px; margin: 0 auto .45rem; border-radius: 50%; border: 3px solid rgba(255,255,255,.7); overflow: hidden;
+      background: rgba(8,24,40,.78); display: grid; place-items: center; color: white; font-family: var(--font-display); font-size: 1.2rem;
+    }
+    .field-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .field-name { font-size: .78rem; font-weight: 700; text-shadow: 0 1px 4px rgba(0,0,0,.45); }
+    .field-role { font-size: .68rem; color: rgba(255,255,255,.86); }
+    .review-list { display: grid; gap: .85rem; }
+    .review-row {
+      display: grid; grid-template-columns: 64px 1fr auto; gap: 1rem; align-items: center;
+      background: rgba(255,255,255,.04); border: 1px solid var(--color-border); border-radius: 1rem; padding: .75rem;
+    }
+    .review-row img, .review-fallback {
+      width: 64px; height: 64px; border-radius: .85rem; object-fit: cover; object-position: center top; background: #0b1c31;
+      display: grid; place-items: center;
+    }
+    .review-row input {
+      width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: .85rem;
+      color: white; padding: .85rem .9rem; min-height: 46px;
+    }
+    textarea {
+      width: 100%; min-height: 92px; resize: vertical; background: rgba(255,255,255,.05); color: white;
+      border: 1px solid rgba(255,255,255,.1); border-radius: 1rem; padding: .9rem;
+    }
+    .split { display: grid; gap: var(--space-6); grid-template-columns: 1fr 1fr; }
+    .empty { padding: 1.2rem; border-radius: 1rem; background: rgba(255,255,255,.04); border: 1px dashed rgba(255,255,255,.16); color: var(--color-text-muted); }
+    .small { font-size: var(--text-sm); }
+    .tiny { font-size: var(--text-xs); }
+    .section-title { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1rem; }
+    @media (max-width: 920px) {
+      .grid-main, .split { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      .options { grid-template-columns: 1fr; }
+      .field { min-height: 820px; }
+      .field-slot { width: 76px; }
+      .field-avatar { width: 58px; height: 58px; }
+      .review-row { grid-template-columns: 56px 1fr; }
+      .review-row > :last-child { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const { useMemo, useState, useEffect } = React;
+
+    const PLAYERS = [
+      { id:1, firstName:'Lucas', lastName:'Chevalier', name:'Lucas Chevalier', age:24, position:'Gardien de but', shortPosition:'GB', number:30, squad:'starters', discovered:true, photo:'https://img.a.transfermarkt.technology/portrait/header/463600-1708342501.jpg?lm=1', bio:'Formé dans le Nord, il a grandi au LOSC avant de rejoindre Paris en août 2025.', slot:{ x:50, y:89 } },
+      { id:2, firstName:'Achraf', lastName:'Hakimi', name:'Achraf Hakimi', age:27, position:'Défenseur', shortPosition:'DD', number:2, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/header/398073-1672304327.jpg?lm=1', bio:'Formé au Real Madrid, passé par Dortmund et l’Inter, il s’est imposé comme latéral offensif de référence à Paris.', slot:{ x:84, y:73 } },
+      { id:3, firstName:'Marquinhos', lastName:'', name:'Marquinhos', age:32, position:'Défenseur', shortPosition:'DC', number:5, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/181767-1672303747.jpg?lm=1', bio:'Capitaine parisien, il a construit l’essentiel de sa carrière au PSG après ses débuts professionnels au Brésil puis en Italie.', slot:{ x:38, y:73 } },
+      { id:4, firstName:'Willian', lastName:'Pacho', name:'Willian Pacho', age:24, position:'Défenseur', shortPosition:'DC', number:51, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/header/661171-1696508666.jpg?lm=1', bio:'International équatorien, il a franchi les étapes en Belgique et en Allemagne avant son arrivée à Paris.', slot:{ x:62, y:73 } },
+      { id:5, firstName:'Nuno', lastName:'Mendes', name:'Nuno Mendes', age:23, position:'Défenseur', shortPosition:'DG', number:25, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/578006-1767122389.png?lm=1', bio:'Révélé au Sporting CP, le latéral portugais a vite confirmé au PSG par sa puissance et sa projection.', slot:{ x:16, y:73 } },
+      { id:6, firstName:'Vitinha', lastName:'', name:'Vitinha', age:26, position:'Milieu de terrain', shortPosition:'MC', number:17, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/487469-1749415169.jpg?lm=1', bio:'Passé par Porto et une expérience en Angleterre, il s’est installé comme métronome du milieu parisien.', slot:{ x:50, y:56 } },
+      { id:7, firstName:'João', lastName:'Neves', name:'João Neves', age:21, position:'Milieu de terrain', shortPosition:'MC', number:87, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/670681-1701295511.jpg?lm=1', bio:'Jeune milieu portugais issu du Benfica, il s’est fait remarquer très tôt par son volume et sa lecture du jeu.', slot:{ x:32, y:50 } },
+      { id:8, firstName:'Fabián', lastName:'Ruiz', name:'Fabián Ruiz', age:30, position:'Milieu de terrain', shortPosition:'MC', number:8, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/header/350219-1718958379.jpg?lm=1', bio:'Formé au Betis puis passé par Naples, il apporte son pied gauche et son expérience internationale au PSG.', slot:{ x:68, y:50 } },
+      { id:9, firstName:'Khvicha', lastName:'Kvaratskhelia', name:'Khvicha Kvaratskhelia', age:25, position:'Attaquant', shortPosition:'AG', number:7, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/502670-1777411223.jpg?lm=1', bio:'L’ailier géorgien s’est révélé au plus haut niveau en Serie A avant de rejoindre le secteur offensif parisien.', slot:{ x:18, y:24 } },
+      { id:10, firstName:'Ousmane', lastName:'Dembélé', name:'Ousmane Dembélé', age:29, position:'Attaquant', shortPosition:'AD', number:10, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/288230-1684148641.jpg?lm=1', bio:'Formé à Rennes puis passé par Dortmund et Barcelone, il apporte percussion et créativité sur le front de l’attaque.', slot:{ x:82, y:24 } },
+      { id:11, firstName:'Gonçalo', lastName:'Ramos', name:'Gonçalo Ramos', age:25, position:'Attaquant', shortPosition:'BU', number:9, squad:'starters', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/550550-1681906158.jpg?lm=1', bio:'L’avant-centre portugais s’est fait connaître à Benfica par son efficacité avant de rejoindre Paris.', slot:{ x:50, y:18 } },
+
+      { id:12, firstName:'Matvey', lastName:'Safonov', name:'Matvey Safonov', age:27, position:'Gardien de but', shortPosition:'GB', number:39, squad:'bench', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/header/318470-1732658603.jpg?lm=1', bio:'Gardien russe formé à Krasnodar, il a bâti sa réputation dans son club formateur avant son départ vers Paris.', slot:{ x:20, y:20 } },
+      { id:13, firstName:'Lucas', lastName:'Beraldo', name:'Lucas Beraldo', age:22, position:'Défenseur', shortPosition:'DC', number:4, squad:'bench', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/header/872171-1715107660.jpg?lm=1', bio:'Défenseur brésilien formé à São Paulo, il a rejoint très jeune l’effectif parisien.', slot:{ x:40, y:20 } },
+      { id:14, firstName:'Illia', lastName:'Zabarnyi', name:'Illia Zabarnyi', age:24, position:'Défenseur', shortPosition:'DC', number:6, squad:'bench', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/659089-1760065378.jpg?lm=1', bio:'International ukrainien, il s’est révélé dès ses débuts au Dynamo Kyiv avant d’évoluer en Premier League.', slot:{ x:60, y:20 } },
+      { id:15, firstName:'Lucas', lastName:'Hernández', name:'Lucas Hernández', age:30, position:'Défenseur', shortPosition:'DG', number:21, squad:'bench', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/281963-1667830435.jpg?lm=1', bio:'Champion du monde français, il a joué en Espagne puis en Allemagne avant de rejoindre Paris.', slot:{ x:80, y:20 } },
+      { id:16, firstName:'Lee', lastName:'Kang-In', name:'Lee Kang-In', age:25, position:'Milieu de terrain', shortPosition:'MO', number:19, squad:'bench', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/header/557149-1703978046.jpg?lm=1', bio:'Formé à Valence et révélé aussi en Liga, le Sud-Coréen apporte technique et polyvalence au PSG.', slot:{ x:28, y:50 } },
+      { id:17, firstName:'Désiré', lastName:'Doué', name:'Désiré Doué', age:21, position:'Attaquant', shortPosition:'AD', number:14, squad:'bench', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/914562-1667317075.jpg?lm=1', bio:'Produit de la formation rennaise, il s’est imposé très tôt comme un joueur offensif créatif et mobile.', slot:{ x:50, y:50 } },
+      { id:18, firstName:'Bradley', lastName:'Barcola', name:'Bradley Barcola', age:24, position:'Attaquant', shortPosition:'AG', number:29, squad:'bench', discovered:false, photo:'https://img.a.transfermarkt.technology/portrait/big/708265-1653406915.jpg?lm=1', bio:'Issu de l’OL, il s’est affirmé en Ligue 1 avant de rejoindre la ligne d’attaque parisienne.', slot:{ x:72, y:50 } }
+    ];
+
+    const POSITIONS = [...new Set(PLAYERS.map(p => p.position))];
+    const LIVES = 3;
+    const MATCHES = [
+      { type:'past', competition:'Ligue 1', home:'Paris Saint-Germain', away:'FC Lorient', date:'2 mai 2026', time:'15:00', venue:'Parc des Princes', score:'2-2' },
+      { type:'past', competition:'Ligue des champions', home:'FC Bayern München', away:'Paris Saint-Germain', date:'6 mai 2026', time:'19:00', venue:'Allianz Arena', score:'1-1' },
+      { type:'past', competition:'Ligue 1', home:'Paris Saint-Germain', away:'Stade Brestois 29', date:'10 mai 2026', time:'19:00', venue:'Parc des Princes', score:'1-0' },
+      { type:'past', competition:'Ligue 1', home:'Racing Club de Lens', away:'Paris Saint-Germain', date:'13 mai 2026', time:'19:00', venue:'Stade Bollaert-Delelis', score:'0-2' },
+      { type:'next', competition:'Ligue 1', home:'Paris FC', away:'Paris Saint-Germain', date:'17 mai 2026', time:'19:00', venue:'Stade Jean Bouin', score:null },
+      { type:'next', competition:'Ligue des champions', home:'Paris Saint-Germain', away:'Arsenal FC', date:'30 mai 2026', time:'16:00', venue:'Puskás Aréna', score:null }
+    ];
+
+    const HONOURS = [
+      { year:'1970', title:'Naissance du club', text:'Le Paris Saint-Germain est fondé en 1970.' },
+      { year:'1982', title:'Premier grand trophée', text:'Le PSG remporte sa première Coupe de France.' },
+      { year:'1986', title:'Premier titre de champion', text:'Paris devient champion de France pour la première fois.' },
+      { year:'1996', title:'Succès européen', text:'Le club gagne la Coupe des vainqueurs de coupe.' },
+      { year:'2011', title:'Nouvelle ère', text:'Le changement d’actionnariat lance une phase de forte croissance sportive et internationale.' },
+      { year:'2020', title:'Finale de C1', text:'Paris atteint sa première finale de Ligue des champions.' },
+      { year:'Depuis 2020', title:'Club global', text:'Le PSG s’impose comme marque mondiale, inspirée par Paris et tournée vers la performance.' }
+    ];
+    const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
+    const normalize = s => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+
+    function makeNameOpts(correct) {
+      const wrong = shuffle(PLAYERS.filter(p => p.id !== correct.id)).slice(0, 3);
+      return shuffle([correct.name, ...wrong.map(p => p.name)]);
+    }
+    function makePosOpts(correct) {
+      const wrong = shuffle(POSITIONS.filter(p => p !== correct)).slice(0, 3);
+      return shuffle([correct, ...wrong]);
+    }
+    function makeReviewPool(players) {
+      return shuffle(players.filter(p => p.discovered));
+    }
+
+    function JerseyFallback({ number }) {
+      return (
+        <div className="jersey" aria-label="Photo indisponible">
+          <svg viewBox="0 0 100 110" width="140" height="154">
+            <defs>
+              <linearGradient id="jgrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#DA020E" />
+                <stop offset="100%" stopColor="#7a0008" />
+              </linearGradient>
+            </defs>
+            <path d="M28,12 L5,34 L18,42 L18,96 L82,96 L82,42 L95,34 L72,12 L62,18 Q50,24 38,18 Z" fill="url(#jgrad)" stroke="rgba(0,0,0,0.3)" strokeWidth="1.5" />
+            <text x="50" y="73" textAnchor="middle" fill="white" fontSize="30" fontFamily="Bebas Neue" letterSpacing="2">{number}</text>
+          </svg>
+          <p className="tiny faint" style={{ marginTop: '0.8rem', textTransform:'uppercase', letterSpacing:'.18em' }}>Photo indisponible</p>
+        </div>
+      );
+    }
+
+
+
+    function PlayerPhoto({ src, alt, className = '', style = {}, fallbackNumber = null }) {
+      const [failed, setFailed] = useState(false);
+      if (!src || failed) {
+        return fallbackNumber !== null
+          ? <div className={className} style={style}><JerseyFallback number={fallbackNumber} /></div>
+          : <div className={className} style={style}></div>;
+      }
+      return <img src={src} alt={alt} loading="lazy" className={className} style={style} onError={() => setFailed(true)} />;
+    }
+
+    function LivesBar({ lives }) {
+      return <div className="lives">{Array.from({ length: LIVES }).map((_, i) => <span key={i} style={{ filter: i < lives ? 'none' : 'grayscale(1) opacity(.25)' }}>❤️</span>)}</div>;
+    }
+
+    function OptionButton({ label, selected, answered, correct, onClick }) {
+      let cls = 'btn-option';
+      if (!answered && selected) cls += ' selected';
+      if (answered && correct) cls += ' correct';
+      if (answered && selected && !correct) cls += ' wrong';
+      return <button className={cls} onClick={answered ? undefined : onClick}>{label}</button>;
+    }
+
+    function Field({ title, players }) {
+      return (
+        <div className="panel">
+          <div className="panel-body">
+            <div className="section-title">
+              <div>
+                <h2>{title}</h2>
+
+              </div>
+              <div className="pill">{players.filter(p => p.discovered).length} / {players.length} visibles</div>
+            </div>
+            <div className="field">
+              <div className="half-line"></div>
+              <div className="box-top"></div>
+              <div className="box-bottom"></div>
+              {players.map(player => (
+                <div key={player.id} className="field-slot" style={{ left: `${player.slot.x}%`, top: `${player.slot.y}%` }}>
+                  <div className="field-avatar">
+                    {player.discovered ? <PlayerPhoto src={player.photo} alt={player.name} fallbackNumber={player.number} /> : <span>{player.number}</span>}
+                  </div>
+                  <div className="field-name">{player.discovered ? player.lastName || player.firstName : '???'}</div>
+                  <div className="field-role">{player.shortPosition}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function PSGQuizApp() {
+      const [tab, setTab] = useState('quiz');
+      const [matches, setMatches] = useState([]);
+      const [matchesLoading, setMatchesLoading] = useState(true);
+      const [quizLock, setQuizLock] = useState(false);
+      const [players, setPlayers] = useState(() => shuffle(PLAYERS).map(p => ({ ...p, note:'', favorite:false })));
+      const [idx, setIdx] = useState(0);
+      const [phase, setPhase] = useState('welcome');
+      const [lives, setLives] = useState(LIVES);
+      const [score, setScore] = useState(0);
+      const [streak, setStreak] = useState(0);
+      const [maxStreak, setMaxStreak] = useState(0);
+      const [correct, setCorrect] = useState(0);
+      const [total, setTotal] = useState(0);
+      const [selName, setSelName] = useState(null);
+      const [selPos, setSelPos] = useState(null);
+      const [answered, setAnswered] = useState(false);
+      const [isCorrect, setIsCorrect] = useState(null);
+      const [reviewAnswers, setReviewAnswers] = useState({});
+      const [reviewResult, setReviewResult] = useState(null);
+      const [ultimatePool, setUltimatePool] = useState([]);
+      const [ultimateIndex, setUltimateIndex] = useState(0);
+      const [ultimateInput, setUltimateInput] = useState('');
+      const [ultimateTime, setUltimateTime] = useState(10);
+      const [ultimateRunning, setUltimateRunning] = useState(false);
+      const [ultimateScore, setUltimateScore] = useState(0);
+      const [ultimateBest, setUltimateBest] = useState(0);
+      const [ultimateFeedback, setUltimateFeedback] = useState(null);
+      const [ultimateChoices, setUltimateChoices] = useState([]);
+
+      const current = players[idx];
+      const starters = useMemo(() => players.filter(p => p.squad === 'starters'), [players]);
+      const bench = useMemo(() => players.filter(p => p.squad === 'bench'), [players]);
+      const discoveredPlayers = useMemo(() => players.filter(p => p.discovered), [players]);
+      const favorites = useMemo(() => players.filter(p => p.favorite), [players]);
+      const reviewPool = useMemo(() => makeReviewPool(players), [players]);
+      const currentUltimate = ultimatePool[ultimateIndex] || null;
+      const nameOptions = useMemo(() => current ? makeNameOpts(current) : [], [current, idx, players]);
+      const posOptions = useMemo(() => current ? makePosOpts(current.position) : [], [current, idx, players]);
+
+      const startGame = () => {
+        setPlayers(prev => shuffle(prev));
+        setIdx(0); setLives(LIVES); setScore(0); setStreak(0); setMaxStreak(0); setCorrect(0); setTotal(0);
+        setSelName(null); setSelPos(null); setAnswered(false); setIsCorrect(null); setPhase('playing'); setTab('quiz');
+      };
+
+      const updatePlayer = (id, patch) => {
+        setPlayers(prev => prev.map(p => p.id === id ? { ...p, ...patch } : p));
+      };
+
+      const resetField = () => {
+        setPlayers(prev => prev.map(p => ({ ...p, discovered:false })));
+      };
+
+      const confirm = () => {
+        if (!current || !selName || !selPos || answered || quizLock) return;
+        setQuizLock(true);
+        const ok = selName === current.name && selPos === current.position;
+        const nextStreak = ok ? streak + 1 : 0;
+        const mult = Math.min(nextStreak, 5);
+        const nextLives = ok ? lives : lives - 1;
+        setAnswered(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setIsCorrect(ok);
+        setStreak(nextStreak);
+        setMaxStreak(ms => Math.max(ms, nextStreak));
+        setScore(s => ok ? s + 100 * mult : s);
+        setLives(nextLives);
+        setCorrect(c => c + (ok ? 1 : 0));
+        setTotal(t => t + 1);
+        if (ok && !current.discovered) updatePlayer(current.id, { discovered: true });
+        setTimeout(() => {
+          setQuizLock(false);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (!ok && lives - 1 <= 0) { setPhase('gameover'); return; }
+          if (idx + 1 >= players.length) { setPhase('complete'); return; }
+          setIdx(i => i + 1);
+          setSelName(null); setSelPos(null); setAnswered(false); setIsCorrect(null);
+        }, 2000);
+      };
+
+      const next = () => {
+        setQuizLock(false);
+        if (lives <= 0) { setPhase('gameover'); return; }
+        if (idx + 1 >= players.length) { setPhase('complete'); return; }
+        setIdx(i => i + 1);
+        setSelName(null); setSelPos(null); setAnswered(false); setIsCorrect(null);
+      };
+
+      const resetReview = () => { setReviewAnswers({}); setReviewResult(null); };
+      const submitReview = () => {
+        const details = reviewPool.map(p => {
+          const user = normalize(reviewAnswers[p.id]);
+          const expected = normalize(p.name);
+          const ok = user && (user === expected || user === normalize(p.firstName + ' ' + p.lastName).trim() || user === normalize((p.lastName || p.firstName)));
+          return { id: p.id, name: p.name, ok };
+        });
+        const good = details.filter(d => d.ok).length;
+        setReviewResult({ good, total: details.length, details });
+      };
+
+
+      useEffect(() => {
+        if (phase !== 'playing' || answered) return;
+        if (selName && selPos) {
+          const t = setTimeout(() => confirm(), 120);
+          return () => clearTimeout(t);
+        }
+      }, [selName, selPos, phase, answered]);
+
+      useEffect(() => {
+        if (!ultimateRunning || !currentUltimate) return;
+        const t = setInterval(() => {
+          setUltimateTime(prev => {
+            if (prev <= 1) {
+              clearInterval(t);
+              setTimeout(() => handleUltimateAnswer(true), 0);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        return () => clearInterval(t);
+      }, [ultimateRunning, ultimateIndex, currentUltimate]);
+
+      const startUltimate = () => {
+        const pool = shuffle(players.map(p => ({ ...p })));
+        setUltimatePool(pool);
+        setUltimateIndex(0);
+        setUltimateInput('');
+        setUltimateTime(10);
+        setUltimateScore(0);
+        setUltimateFeedback(null);
+        setUltimateRunning(true);
+        const first = pool[0];
+        const wrong = shuffle(players.filter(p => p.id !== first.id)).slice(0, 3);
+        setUltimateChoices(shuffle([first, ...wrong]));
+      };
+
+      const advanceUltimate = (nextScore) => {
+        if (ultimateIndex + 1 >= ultimatePool.length) {
+          setUltimateRunning(false);
+          setUltimateBest(b => Math.max(b, nextScore));
+          return;
+        }
+        const ni = ultimateIndex + 1;
+        const nextPlayer = ultimatePool[ni];
+        setUltimateIndex(ni);
+        setUltimateInput('');
+        setUltimateTime(10);
+        if (nextPlayer) {
+          const wrong = shuffle(players.filter(p => p.id !== nextPlayer.id)).slice(0, 3);
+          setUltimateChoices(shuffle([nextPlayer, ...wrong]));
+        }
+      };
+
+      const handleUltimateAnswer = (timeout = false, selectedName = null) => {
+        if (!currentUltimate || !ultimateRunning) return;
+        const ok = !timeout && selectedName === currentUltimate.name;
+        const nextScore = ok ? ultimateScore + 1 : ultimateScore;
+        updatePlayer(currentUltimate.id, { discovered: ok });
+        setUltimateFeedback(ok ? `✅ ${currentUltimate.name} ajouté au terrain.` : `❌ ${currentUltimate.name} retiré du terrain.`);
+        if (ok) setUltimateScore(s => s + 1);
+        else setUltimateBest(b => Math.max(b, ultimateScore));
+        setTimeout(() => advanceUltimate(nextScore), 700);
+      };
+
+      const stopUltimate = () => {
+        setUltimateRunning(false);
+        setUltimatePool([]);
+        setUltimateIndex(0);
+        setUltimateChoices([]);
+        setUltimateTime(10);
+        setUltimateFeedback('Partie arrêtée.');
+        setUltimateBest(b => Math.max(b, ultimateScore));
+      };
+
+      const renderQuiz = () => {
+        if (phase === 'welcome') {
+          return (
+            <div className="panel hero-card">
+              <div className="panel-body" style={{ padding:'2rem' }}>
+                <h1>Quiz PSG 2025 · 2026</h1>
+                <div className="cards" style={{ marginTop:'1.5rem' }}>
+                  <div className="player-card"><div className="player-content"><h3>18 joueurs</h3></div></div>
+                  <div className="player-card"><div className="player-content"><h3>Deux terrains</h3></div></div>
+                  <div className="player-card"><div className="player-content"><h3>Test ultime</h3></div></div>
+                </div>
+                <div className="actions" style={{ marginTop:'1.5rem' }}>
+                  <button className="btn-primary" onClick={startGame}>Commencer</button>
+                  <button className="btn-ghost" onClick={() => setTab('discover')}>Voir la découverte</button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+        if (phase === 'gameover' || phase === 'complete') {
+          const acc = total ? Math.round((correct / total) * 100) : 0;
+          return (
+            <div className="panel">
+              <div className="panel-body">
+                <h2>{phase === 'complete' ? 'Parcours terminé' : 'Game over'}</h2>
+                <p className="muted" style={{ marginTop:'.8rem' }}>{phase === 'complete' ? 'Tu as parcouru toute la liste du quiz.' : 'Tu as perdu toutes tes vies pour cette session.'}</p>
+                <div className="stats" style={{ marginTop:'1.2rem' }}>
+                  <div className="stat-row"><span className="muted">Score</span><strong>{score} pts</strong></div>
+                  <div className="stat-row"><span className="muted">Réponses justes</span><strong>{correct} / {total}</strong></div>
+                  <div className="stat-row"><span className="muted">Précision</span><strong>{acc}%</strong></div>
+                  <div className="stat-row"><span className="muted">Meilleure série</span><strong>{maxStreak}</strong></div>
+                  <div className="stat-row"><span className="muted">Joueurs découverts</span><strong>{discoveredPlayers.length} / {players.length}</strong></div>
+                </div>
+                <div className="actions" style={{ marginTop:'1.2rem' }}>
+                  <button className="btn-primary" onClick={startGame}>Rejouer</button>
+                  <button className="btn-secondary" onClick={() => setTab('field')}>Voir les terrains</button>
+                  <button className="btn-ghost" onClick={() => setTab('review')}>Aller en révision</button>
+                </div>
+              </div>
+            </div>
+          );
+        }
+        return (
+          <div className="grid grid-main">
+            <div className="panel hero-card">
+              <div className="hero-media">
+                {current?.photo ? <img src={current.photo} alt={current.name} /> : <JerseyFallback number={current?.number} />}
+                {current && <div className="number-badge">#{current.number}</div>}
+                {streak >= 2 && <div className="streak-badge">🔥 x{Math.min(streak, 5)}</div>}
+              </div>
+              <div className="panel-body">
+                {answered && (
+                  <div className={`feedback ${isCorrect ? 'ok' : 'bad'}`}>
+                    {isCorrect ? `Bonne réponse. ${current.name} a été ajouté à tes joueurs découverts.` : `Mauvaise réponse. C’était ${current.name}, ${current.position.toLowerCase()}.`}
+                  </div>
+                )}
+                <div className="question">
+                  <div className="question-label">Qui est ce joueur ?</div>
+                  <div className="options">
+                    {nameOptions.map(name => (
+                      <OptionButton key={name} label={name} selected={selName === name} answered={answered} correct={name === current.name} onClick={() => setSelName(name)} />
+                    ))}
+                  </div>
+                </div>
+                <div className="question">
+                  <div className="question-label">Quel est son poste ?</div>
+                  <div className="options">
+                    {posOptions.map(pos => (
+                      <OptionButton key={pos} label={pos} selected={selPos === pos} answered={answered} correct={pos === current.position} onClick={() => setSelPos(pos)} />
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div className="panel">
+              <div className="panel-body">
+                <h2>Session</h2>
+                <div className="stats" style={{ marginTop:'1rem' }}>
+                  <div className="stat-row"><span className="muted">Progression</span><strong>{Math.min(idx + (phase === 'playing' ? 1 : 0), players.length)} / {players.length}</strong></div>
+                  <div className="stat-row"><span className="muted">Score</span><strong>{score}</strong></div>
+                  <div className="stat-row"><span className="muted">Vies</span><LivesBar lives={lives} /></div>
+                  <div className="stat-row"><span className="muted">Série</span><strong>{streak}</strong></div>
+                  <div className="stat-row"><span className="muted">Découverts</span><strong>{discoveredPlayers.length}</strong></div>
+                  <div className="stat-row"><span className="muted">Favoris</span><strong>{favorites.length}</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const renderDiscover = () => (
+        <div className="split">
+          <div className="panel">
+            <div className="panel-body">
+              <div className="section-title">
+                <div>
+                  <h2>Découverte</h2>
+  
+                </div>
+                <div className="pill"><span className="discovered">●</span> {discoveredPlayers.length} découverts</div>
+              </div>
+              <div className="cards">
+                {players.map(player => (
+                  <div key={player.id} className="player-card">
+                    <div className="player-thumb">
+                      <PlayerPhoto src={player.photo} alt={player.name} fallbackNumber={player.number} style={{ width:'172px', height:'172px', borderRadius:'50%', overflow:'hidden', border:'4px solid rgba(255,255,255,.12)' }} />
+                    </div>
+                    <div className="player-content">
+                      <div style={{ display:'flex', justifyContent:'space-between', gap:'.75rem', alignItems:'start' }}>
+                        <div>
+                          <h3>{player.name}</h3>
+                          <p className="muted small">{player.age} ans · {player.position}</p>
+                        </div>
+                        <button className="btn-ghost tiny" onClick={() => updatePlayer(player.id, { favorite: !player.favorite })}>{player.favorite ? '★ Favori' : '☆ Favori'}</button>
+                      </div>
+                      <div style={{ display:'flex', gap:'.5rem', flexWrap:'wrap' }}>
+                        <span className="pill">#{player.number}</span>
+                        <span className="pill">{player.squad === 'starters' ? 'Titulaire' : 'Remplaçant'}</span>
+                        <span className={`pill ${player.discovered ? 'discovered' : 'undiscovered'}`}>{player.discovered ? 'Découvert' : 'À trouver'}</span>
+                      </div>
+                      <p className="muted small">{player.bio}</p>
+                      <label className="tiny faint">Ton commentaire</label>
+                      <textarea value={player.note} onChange={e => updatePlayer(player.id, { note: e.target.value })} placeholder="Exemple : très bon dans le quiz, joueur que je veux retenir, poste à mémoriser..." />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="grid">
+            <div className="panel">
+              <div className="panel-body">
+                <h2>Favoris</h2>
+                {favorites.length ? (
+                  <div className="review-list" style={{ marginTop:'1rem' }}>
+                    {favorites.map(player => (
+                      <div key={player.id} className="review-row">
+                        <PlayerPhoto src={player.photo} alt={player.name} fallbackNumber={player.number} />
+                        <div>
+                          <strong className="fav">{player.name}</strong>
+                          <div className="muted small">{player.position} · {player.age} ans</div>
+                          <div className="tiny faint">{player.note || 'Aucun commentaire pour le moment.'}</div>
+                        </div>
+                        <button className="btn-ghost" onClick={() => updatePlayer(player.id, { favorite: false })}>Retirer</button>
+                      </div>
+                    ))}
+                  </div>
+                ) : <div className="empty" style={{ marginTop:'1rem' }}>Aucun favori pour l’instant.</div>}
+              </div>
+            </div>
+            <div className="panel">
+              <div className="panel-body">
+                <h2>Mémorisation</h2>
+                <p className="muted">Tu peux utiliser cette section comme carnet rapide : ajoute tes favoris, note ce qui te fait hésiter, puis va dans Révision pour tester uniquement les joueurs débloqués.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      const STATIC_MATCHES = [
+        { title:'Paris FC vs PSG', date:'17 mai 2026', time:'19:00', score:null, competition:'Ligue 1', venue:'Stade Jean Bouin' },
+        { title:'PSG vs Arsenal FC', date:'30 mai 2026', time:'16:00', score:null, competition:'Ligue des champions', venue:'Puskás Aréna' },
+        { title:'PSG vs FC Lorient', date:'2 mai 2026', time:'15:00', score:'2-2', competition:'Ligue 1', venue:'Parc des Princes' },
+        { title:'Bayern vs PSG', date:'6 mai 2026', time:'19:00', score:'1-1', competition:'Ligue des champions', venue:'Allianz Arena' },
+        { title:'PSG vs Stade Brestois', date:'10 mai 2026', time:'19:00', score:'1-0', competition:'Ligue 1', venue:'Parc des Princes' },
+        { title:'Lens vs PSG', date:'13 mai 2026', time:'19:00', score:'0-2', competition:'Ligue 1', venue:'Stade Bollaert-Delelis' },
+      ];
+
+      useEffect(() => {
+        const load = async () => {
+          setMatchesLoading(true);
+          try {
+            const resp = await fetch('matches.json?t=' + Date.now());
+            if (!resp.ok) throw new Error('no matches.json');
+            const data = await resp.json();
+            setMatches(data.length ? data : STATIC_MATCHES);
+          } catch {
+            setMatches(STATIC_MATCHES);
+          } finally {
+            setMatchesLoading(false);
+          }
+        };
+        load();
+      }, []);
+
+      const renderMatches = () => {
+        const past = matches.filter(m => m.score);
+        const upcoming = matches.filter(m => !m.score);
+        return (
+          <div className="split">
+            <div className="panel">
+              <div className="panel-body">
+                <h2>Prochains matchs</h2>
+                {matchesLoading && <p className="muted" style={{marginTop:'1rem'}}>Chargement...</p>}
+                <div className="review-list" style={{marginTop:'1rem'}}>
+                  {upcoming.map(m => (
+                    <div key={m.date + m.title} className="review-row">
+                      <div className="review-fallback"><strong>{m.time}</strong></div>
+                      <div>
+                        <strong>{m.title}</strong>
+                        <div className="muted small">{m.date}</div>
+                        <div className="tiny faint">{m.competition}{m.venue ? ' · ' + m.venue : ''}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {!matchesLoading && upcoming.length === 0 && <p className="muted">Aucun match à venir.</p>}
+                </div>
+              </div>
+            </div>
+            <div className="panel">
+              <div className="panel-body">
+                <h2>Matchs passés</h2>
+                <div className="review-list" style={{marginTop:'1rem'}}>
+                  {past.map(m => (
+                    <div key={m.date + m.title} className="review-row">
+                      <div className="review-fallback"><strong>{m.score}</strong></div>
+                      <div>
+                        <strong>{m.title}</strong>
+                        <div className="muted small">{m.date}</div>
+                        <div className="tiny faint">{m.competition}{m.venue ? ' · ' + m.venue : ''}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {!matchesLoading && past.length === 0 && <p className="muted">Aucun résultat récent.</p>}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const renderHonours = () => (
+        <div className="split">
+          <div className="panel">
+            <div className="panel-body">
+              <div className="section-title">
+                <div>
+                  <h2>Palmarès</h2>
+                  <p className="muted small">Le PSG est fondé en 1970, gagne ses premiers grands titres dans les années 80 et 90, et devient un club global à partir de 2011.</p>
+                </div>
+              </div>
+              <div className="review-list">
+                {HONOURS.map(item => (
+                  <div key={item.year + item.title} className="review-row">
+                    <div className="review-fallback"><strong>{item.year}</strong></div>
+                    <div>
+                      <strong>{item.title}</strong>
+                      <div className="muted small">{item.text}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="panel">
+            <div className="panel-body">
+              <h2>Matchs officiels</h2>
+              <p className="muted" style={{marginBottom:'1rem'}}>Retrouve le calendrier complet et les résultats en direct sur le site officiel.</p>
+              <a href="https://www.psg.fr/football-masculin/calendrier" target="_blank" rel="noreferrer" className="btn-secondary" style={{display:'inline-block',padding:'0.75rem 1.25rem',borderRadius:'0.9rem',color:'white',textDecoration:'none',fontWeight:'700',letterSpacing:'.08em',textTransform:'uppercase'}}>
+                Calendrier officiel PSG
+              </a>
+            </div>
+          </div>
+        </div>
+      );
+
+      const renderField = () => (
+        <div className="field-wrap">
+          <div className="actions" style={{marginBottom:'1rem'}}><button className="btn-secondary" onClick={resetField}>Réinitialiser le terrain</button></div>
+          <Field title="Terrain principal" players={starters} />
+          <Field title="Banc et rotation" players={bench} />
+        </div>
+      );
+
+      const renderReview = () => (
+        <div className="split">
+          <div className="panel">
+            <div className="panel-body">
+              <div className="section-title">
+                <div>
+                  <h2>Test ultime</h2>
+  
+                </div>
+                <div className="actions">
+                  <button className="btn-primary" onClick={startUltimate}>Lancer</button>
+                  <button className="btn-ghost" onClick={stopUltimate}>Stop</button>
+                </div>
+              </div>
+              {currentUltimate && ultimateRunning ? (
+                <div className="grid" style={{ gap:'1rem' }}>
+                  <div className="feedback ok" style={{ borderColor:'rgba(199,162,86,.45)', color:'white', background:'rgba(199,162,86,.08)' }}>
+                    <div><strong>Temps restant :</strong> {ultimateTime}s</div>
+                    <div><strong>Poste :</strong> {currentUltimate.position}</div>
+                    <div style={{ marginTop:'.5rem' }}><strong>Description :</strong> {currentUltimate.bio}</div>
+                  </div>
+                  <div className="options">
+                    {ultimateChoices.map(choice => (
+                      <button key={choice.id} className="btn-option" onClick={() => handleUltimateAnswer(false, choice.name)}>{choice.name}</button>
+                    ))}
+                  </div>
+                  {ultimateFeedback && <div className="tiny muted">{ultimateFeedback}</div>}
+                </div>
+              ) : (
+                <div className="empty">Lance le test ultime pour commencer, ou relance une nouvelle série aléatoire.</div>
+              )}
+            </div>
+          </div>
+          <div className="grid">
+            <div className="panel">
+              <div className="panel-body">
+                <h2>Performance</h2>
+                <div className="stats" style={{ marginTop:'1rem' }}>
+                  <div className="stat-row"><span className="muted">Score en cours</span><strong>{ultimateScore}</strong></div>
+                  <div className="stat-row"><span className="muted">Meilleur enchaînement</span><strong>{ultimateBest}</strong></div>
+                  <div className="stat-row"><span className="muted">Mode</span><strong>QCM aléatoire</strong></div>
+                </div>
+              </div>
+            </div>
+            <div className="panel">
+              <div className="panel-body">
+                <h2>Règle</h2>
+                <p className="muted">Bonne réponse : le joueur est ajouté au terrain. Mauvaise réponse ou temps écoulé : il est retiré du terrain, même s’il y était déjà. Le bouton stop arrête immédiatement la série.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+      return (
+        <div className="app">
+          <div className="topbar">
+            <div className="brand">
+              <div className="brand-left">
+                <div className="logo">⚽</div>
+                <div>
+                  <h1 style={{ fontSize:'2.2rem' }}>PSG Quiz Plus</h1>
+                  <p className="muted small">Quiz, découverte, favoris, terrain et révision</p>
+                </div>
+              </div>
+              <div className="pill">{discoveredPlayers.length} joueurs découverts</div>
+            </div>
+            <div className="tabs" role="tablist" aria-label="Navigation principale">
+              {[
+                ['quiz', 'Quiz'],
+                ['discover', 'Découverte'],
+                ['field', 'Terrain'],
+                ['review', 'Test ultime'],
+                ['honours', 'Palmarès'],
+                ['matches', 'Matchs'],
+              ].map(([id, label]) => (
+                <button key={id} className={`tab ${tab === id ? 'active' : ''}`} onClick={() => setTab(id)}>{label}</button>
+              ))}
+            </div>
+          </div>
+
+          {tab === 'quiz' && renderQuiz()}
+          {tab === 'discover' && renderDiscover()}
+          {tab === 'field' && renderField()}
+          {tab === 'review' && renderReview()}
+          {tab === 'honours' && renderHonours()}
+          {tab === 'matches' && renderMatches()}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('app')).render(<PSGQuizApp />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+[
+  {
+    "title": "PSG vs FC Lorient",
+    "date": "2026-05-02",
+    "time": "15:00",
+    "score": "2-2",
+    "competition": "Ligue 1",
+    "venue": "Parc des Princes"
+  },
+  {
+    "title": "Bayern München vs PSG",
+    "date": "2026-05-06",
+    "time": "19:00",
+    "score": "1-1",
+    "competition": "Ligue des champions",
+    "venue": "Allianz Arena"
+  },
+  {
+    "title": "PSG vs Stade Brestois",
+    "date": "2026-05-10",
+    "time": "19:00",
+    "score": "1-0",
+    "competition": "Ligue 1",
+    "venue": "Parc des Princes"
+  },
+  {
+    "title": "Lens vs PSG",
+    "date": "2026-05-13",
+    "time": "19:00",
+    "score": "0-2",
+    "competition": "Ligue 1",
+    "venue": "Stade Bollaert-Delelis"
+  },
+  {
+    "title": "Paris FC vs PSG",
+    "date": "2026-05-17",
+    "time": "19:00",
+    "score": null,
+    "competition": "Ligue 1",
+    "venue": "Stade Jean Bouin"
+  },
+  {
+    "title": "PSG vs Arsenal FC",
+    "date": "2026-05-30",
+    "time": "16:00",
+    "score": null,
+    "competition": "Ligue des champions",
+    "venue": "Puskás Aréna"
+  }
+]
